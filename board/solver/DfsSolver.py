@@ -29,12 +29,12 @@ class DfsSolver(ISolver):
             state = toVisit.get_nowait()
             visited.add(state)
 
-            if state.epoch < self.RECURSION_LIMIT:
+            if state.epoch <= self.RECURSION_LIMIT:
                 MutableBoard.mutate(state, Move.ALL)
 
                 for order in self.searchOrder:
-                    if state.children.get(order, None) is not None and state.children[order] not in visited \
-                            and state.children[order] not in toVisit.queue:
-                        if state.children[order].board == finalView:
-                            return state.children[order]
-                        toVisit.put_nowait(state.children[order])
+                    child = state.children.get(order, None)
+                    if child is not None and child not in visited and child not in toVisit.queue:
+                        if child.board == finalView:
+                            return child
+                        toVisit.put_nowait(child)

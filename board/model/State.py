@@ -11,6 +11,7 @@ class State:
         self.previousStep = previousStep
         self.parent = parent
         self.epoch = epoch
+        self.score = 0
 
         self.children = {}
 
