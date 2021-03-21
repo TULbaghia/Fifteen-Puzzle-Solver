@@ -22,6 +22,8 @@ class ManhattanAStrSolver(ISolver):
             visited.add(state)
             MutableBoard.mutate(state, Move.ALL)
 
+            print(str(len(visited)) + " _ " + str(len(toVisit)))
+
             for move in state.children:
                 child = state.children[move]
                 if child is not None and child not in visited and child not in toVisit:
@@ -30,14 +32,17 @@ class ManhattanAStrSolver(ISolver):
                     child.score = self.__getScore(child, finalView)
                     toVisit.append(child)
 
+    """
+    TODO: Sprawdzić czy liczy dobrze x, y
+    """
     def __getScore(self, candidate: State, finalView: Board) -> int:
         res = 0
-        candidate = candidate.board.getBoard()
+        candidate = candidate.board
         finalView = finalView.getBoard()
-        for i in range(len(candidate)):
-            if candidate[i] != 0 and candidate[i] != finalView[i]:
-                ci = finalView.index(candidate[i])
-                y = (i // 4) - (ci // 4)
-                x = (i % 4) - (ci % 4)
+        for i in range(len(candidate.getBoard())):
+            if candidate.getBoard()[i] != 0 and candidate.getBoard()[i] != finalView[i]:
+                ci = finalView.index(candidate.getBoard()[i])
+                y = (i // candidate.row) - (ci // candidate.row)
+                x = (i % candidate.col) - (ci % candidate.col)
                 res += abs(y) + abs(x)
         return res

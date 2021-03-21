@@ -19,7 +19,7 @@ class State:
         return self.board == other.board
 
     def __hash__(self):
-        return self.board.__hash__()
+        return hash(self.board)
 
     def __str__(self):
-        return self.epoch.__str__() + ' ' + self.board.__str__()
+        return f'{self.epoch}xx{self.board}'

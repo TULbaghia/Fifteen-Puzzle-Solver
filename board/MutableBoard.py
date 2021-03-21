@@ -9,31 +9,31 @@ class MutableBoard(object):
 
     @staticmethod
     def __getSwappedBoard(board: Board, x, y) -> Board:
-        board = list(board.getBoard())
-        board[x], board[y] = board[y], board[x]
-        return Board(tuple(board))
+        boardx = list(board.getBoard())
+        boardx[x], boardx[y] = boardx[y], boardx[x]
+        return Board(tuple(boardx), board.col, board.row)
 
     @staticmethod
     def __moveUp(board: Board) -> Union[None, Board]:
-        if board.getEmptyIndex() in range(0, 5):
+        if board.getEmptyIndex() < board.col - 1:
             return
-        return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() - 4, board.getEmptyIndex())
+        return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() - board.col, board.getEmptyIndex())
 
     @staticmethod
     def __moveDown(board: Board) -> Union[None, Board]:
-        if board.getEmptyIndex() in range(12, 16):
+        if board.getEmptyIndex() > len(board.getBoard()) - board.col - 1:
             return
-        return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() + 4, board.getEmptyIndex())
+        return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() + board.col, board.getEmptyIndex())
 
     @staticmethod
     def __moveLeft(board: Board) -> Union[None, Board]:
-        if board.getEmptyIndex() == 0 or board.getEmptyIndex() % 4 == 0:
+        if board.getEmptyIndex() % board.col == 0:
             return
         return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() - 1, board.getEmptyIndex())
 
     @staticmethod
     def __moveRight(board: Board) -> Union[None, Board]:
-        if board.getEmptyIndex() % 3 == 0:
+        if (board.getEmptyIndex() + 1) % board.col == 0:
             return
         return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() + 1, board.getEmptyIndex())
 
