@@ -6,16 +6,13 @@ from .enum.Move import Move
 
 class State:
 
-    def __init__(self, board: Board, previousStep: str = None, parent: State = None, epoch: int = 0):
-        self.epoch = epoch
+    def __init__(self, board: Board, previousStep: Move = None, parent: State = None, epoch: int = 0):
         self.board = board
         self.previousStep = previousStep
         self.parent = parent
-        self.children = []
+        self.epoch = epoch
 
-    def calculateChildren(self, move: Move):
-        for p in self.board.moveBy(move):
-            self.children.append(State(p[0], p[1], self, self.epoch + 1))
+        self.children = {}
 
     def __eq__(self, other: State) -> bool:
         return self.board == other.board

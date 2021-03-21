@@ -1,2 +1,0 @@
-class NoEmptyIndexInBoardException(Exception):
-    pass
