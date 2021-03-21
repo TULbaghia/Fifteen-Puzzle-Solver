@@ -1,9 +1,9 @@
 import re
 from collections import deque
 
-from board.Board import Board
+from board.model.Board import Board
 from board.MutableBoard import MutableBoard
-from board.State import State
+from board.model.State import State
 from board.enum.Move import Move
 from board.solver.ISolver import ISolver
 

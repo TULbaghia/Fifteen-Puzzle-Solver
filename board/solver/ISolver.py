@@ -1,8 +1,8 @@
 from abc import ABC
 
-from board.Board import Board
+from board.model.Board import Board
 from board.MutableBoard import MutableBoard
-from board.State import State
+from board.model.State import State
 from board.enum.Move import Move
 
 

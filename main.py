@@ -1,5 +1,5 @@
-from board.Board import Board
-from board.State import State
+from board.model.Board import Board
+from board.model.State import State
 
 from board.solver.SolverFactory import SolverFactory
 

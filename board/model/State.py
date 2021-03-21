@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .Board import Board
-from .enum.Move import Move
+from board.enum.Move import Move
 
 
 class State:
