@@ -15,6 +15,11 @@ class State:
 
         self.children = {}
 
+    def printTree(self):
+        if self.parent is not None:
+            self.parent.printTree()
+        print(f'{self}')
+
     def __eq__(self, other: State) -> bool:
         return self.board == other.board
 

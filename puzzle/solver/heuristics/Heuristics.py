@@ -14,9 +14,6 @@ class Heuristics(object):
                 res += 1
         return res
 
-    """
-    TODO: Sprawdzić czy liczy dobrze x, y
-    """
     @staticmethod
     def manhattan(candidate: State, finalView: Board) -> int:
         res = 0
@@ -25,7 +22,7 @@ class Heuristics(object):
         for i in range(len(candidate.getBoard())):
             if candidate.getBoard()[i] != 0 and candidate.getBoard()[i] != finalView[i]:
                 ci = finalView.index(candidate.getBoard()[i])
-                y = (i // candidate.row) - (ci // candidate.row)
+                y = (i // candidate.col) - (ci // candidate.col)
                 x = (i % candidate.col) - (ci % candidate.col)
                 res += abs(y) + abs(x)
         return res

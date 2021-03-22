@@ -26,7 +26,7 @@ class Board(object):
         lastR = 0
         for i in range(len(self.__board)):
             c = i % self.col
-            r = (i - c) / self.col
+            r = i // self.col
             if lastR != r:
                 b = b[:-2]
                 b += '), ('
