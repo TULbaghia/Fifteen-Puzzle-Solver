@@ -22,7 +22,7 @@ class Heuristics(object):
         for i in range(len(candidate.getBoard())):
             if candidate.getBoard()[i] != 0 and candidate.getBoard()[i] != finalView[i]:
                 ci = finalView.index(candidate.getBoard()[i])
-                y = (i // candidate.col) - (ci // candidate.col)
-                x = (i % candidate.col) - (ci % candidate.col)
+                y = (i // candidate.getCol()) - (ci // candidate.getCol())
+                x = (i % candidate.getCol()) - (ci % candidate.getCol())
                 res += abs(y) + abs(x)
         return res
