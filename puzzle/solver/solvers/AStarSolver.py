@@ -1,13 +1,17 @@
 from collections import deque
+from typing import Callable
 
-from board.MutableBoard import MutableBoard
-from board.enum.Move import Move
-from board.model.Board import Board
-from board.model.State import State
-from board.solver.ISolver import ISolver
+from puzzle.MutableBoard import MutableBoard
+from puzzle.enum.Move import Move
+from puzzle.model.Board import Board
+from puzzle.model.State import State
+from puzzle.solver.solvers.ISolver import ISolver
 
 
-class HammingAStrSolver(ISolver):
+class AStarSolver(ISolver):
+
+    def __init__(self, heuristics: Callable):
+        self.heuristics = heuristics
 
     def solve(self, initialState: State, finalView: Board) -> State:
         if initialState.board == finalView:
@@ -27,14 +31,5 @@ class HammingAStrSolver(ISolver):
                 if child is not None and child not in visited and child not in toVisit:
                     if child.board == finalView:
                         return child
-                    child.score = self.__getScore(child, finalView)
+                    child.score = self.heuristics(child, finalView)
                     toVisit.append(child)
-
-    def __getScore(self, candidate: State, finalView: Board) -> int:
-        res = 0
-        candidate = candidate.board.getBoard()
-        finalView = finalView.getBoard()
-        for i in range(len(candidate)):
-            if candidate[i] != 0 and candidate[i] != finalView[i]:
-                res += 1
-        return res

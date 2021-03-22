@@ -1,8 +1,8 @@
 from typing import Union
 
-from board.model.Board import Board
-from board.model.State import State
-from board.enum.Move import Move
+from puzzle.model.Board import Board
+from puzzle.model.State import State
+from puzzle.enum.Move import Move
 
 
 class MutableBoard(object):
@@ -62,4 +62,4 @@ class MutableBoard(object):
                 moves.append((move, Move.RIGHT))
 
         for (board, move) in moves:
-            state.children[move] = State(board, move, state, state.epoch + 1)
+            state.children[move] = State(board, move, state)

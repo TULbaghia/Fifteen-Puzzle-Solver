@@ -1,9 +1,9 @@
 from random import shuffle
 
-from board.model.Board import Board
-from board.model.State import State
+from puzzle.model.Board import Board
+from puzzle.model.State import State
 
-from board.solver.SolverFactory import SolverFactory
+from puzzle.solver.SolverFactory import SolverFactory
 
 
 def main():

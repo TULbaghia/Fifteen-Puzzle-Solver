@@ -1,11 +1,11 @@
 import re
 from queue import LifoQueue
 
-from board.model.Board import Board
-from board.MutableBoard import MutableBoard
-from board.model.State import State
-from board.enum.Move import Move
-from board.solver.ISolver import ISolver
+from puzzle.model.Board import Board
+from puzzle.MutableBoard import MutableBoard
+from puzzle.model.State import State
+from puzzle.enum.Move import Move
+from puzzle.solver.solvers.ISolver import ISolver
 
 
 class DfsSolver(ISolver):

@@ -29,8 +29,8 @@ class Board(object):
             r = (i - c) / self.col
             if lastR != r:
                 b = b[:-2]
-                b += ') ('
+                b += '), ('
                 lastR = r
             b += str(self.__board[i]) + ', '
         b = b[:-2] + ")"
-        return f'{self.col}x{self.row}=({b})'
+        return f'({b})'

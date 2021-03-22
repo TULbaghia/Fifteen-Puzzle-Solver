@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 from .Board import Board
-from board.enum.Move import Move
+from puzzle.enum.Move import Move
 
 
 class State:
 
-    def __init__(self, board: Board, previousStep: Move = None, parent: State = None, epoch: int = 0):
+    def __init__(self, board: Board, previousStep: Move = None, parent: State = None):
         self.board = board
         self.previousStep = previousStep
         self.parent = parent
-        self.epoch = epoch
+        self.epoch = 0 if self.parent is None else self.parent.epoch + 1
         self.score = 0
 
         self.children = {}
@@ -22,4 +22,4 @@ class State:
         return hash(self.board)
 
     def __str__(self):
-        return f'{self.epoch}xx{self.board}'
+        return f'epoch="{self.epoch}", board={self.board}, score={self.score}, prevStep={self.previousStep}'

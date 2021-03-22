@@ -1,10 +1,10 @@
 from typing import Union
 
-from board.solver.BfsSolver import BfsSolver
-from board.solver.DfsSolver import DfsSolver
-from board.solver.HammingAStrSolver import HammingAStrSolver
-from board.solver.ManhattanAStrSolver import ManhattanAStrSolver
-from board.solver.ISolver import ISolver
+from puzzle.solver.solvers.AStarSolver import AStarSolver
+from puzzle.solver.solvers.BfsSolver import BfsSolver
+from puzzle.solver.solvers.DfsSolver import DfsSolver
+from puzzle.solver.solvers.ISolver import ISolver
+from puzzle.solver.heuristics.Heuristics import Heuristics
 
 
 class SolverFactory(object):
@@ -16,8 +16,8 @@ class SolverFactory(object):
         elif solver == 'dfs':
             return DfsSolver(arg)
         elif solver == 'astr' and arg == 'hamm':
-            return HammingAStrSolver()
+            return AStarSolver(Heuristics.hamming)
         elif solver == 'astr' and arg == 'manh':
-            return ManhattanAStrSolver()
+            return AStarSolver(Heuristics.manhattan)
         else:
             raise NotImplementedError
