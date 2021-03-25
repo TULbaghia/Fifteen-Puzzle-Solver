@@ -1,6 +1,7 @@
 import time
 from random import shuffle
 
+from puzzle.file.FileWriter import FileWriter
 from puzzle.model.Board import Board
 from puzzle.model.State import State
 import numpy as np
@@ -39,6 +40,7 @@ def main():
     print(end_time - start_time)
 
     solved.printTree()
+    print(FileWriter.writeFile("solved.txt", solved))
 
 
 if __name__ == '__main__':
