@@ -3,8 +3,10 @@ from random import shuffle
 
 from puzzle.model.Board import Board
 from puzzle.model.State import State
+import numpy as np
 
 from puzzle.solver.SolverFactory import SolverFactory
+from puzzle.file.FileReader import FileReader
 
 
 def main():
@@ -26,12 +28,13 @@ def main():
     # solved = solver.solve(State(Board(tuple(arr), 3, 4)),
     #                       Board((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0), 3, 4))
 
-    arr = [1, 4, 8, 10, 13, 2, 9, 0, 7, 5, 6, 11, 3, 18, 15, 16, 17, 14, 19, 12]
-    solver = SolverFactory.createSolver('astr', 'manh')
+    # arr = [1, 4, 8, 10, 13, 2, 9, 0, 7, 5, 6, 11, 3, 18, 15, 16, 17, 14, 19, 12]
 
+    solver = SolverFactory.createSolver('astr', 'manh')
     start_time = time.time()
-    solved = solver.solve(State(Board(tuple(arr), 5, 4)),
-                          Board((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0), 5, 4))
+    board, row, col, model_board = FileReader.readFile("initial_file.txt")
+    solved = solver.solve(State(Board(tuple(board), row, col)),
+                          Board(model_board, row, col))
     end_time = time.time()
     print(end_time - start_time)
 
