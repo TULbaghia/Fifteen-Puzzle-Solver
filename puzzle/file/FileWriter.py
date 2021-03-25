@@ -18,7 +18,7 @@ class FileWriter(object):
     def getPreviousStepsFromFinalState(state, arr: list) -> list:
         if state.parent is not None:
             arr.append(FileWriter.getAcronymFromEnum(state.previousStep))
-            FileWriter.getSteps(state.parent, arr)
+            FileWriter.getPreviousStepsFromFinalState(state.parent, arr)
         return arr
 
     @staticmethod
