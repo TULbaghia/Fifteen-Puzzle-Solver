@@ -10,7 +10,7 @@ class FileWriter(object):
         arr = []
         arr = FileWriter.getPreviousStepsFromFinalState(state, arr)
         with open(filePath, mode='w') as file:
-            file.write(state.getEpoch() + "\n")
+            file.write(str(state.epoch) + "\n")
             file.write(FileWriter.listToString(arr[::-1]))
         return arr
 

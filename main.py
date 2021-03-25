@@ -31,16 +31,20 @@ def main():
 
     # arr = [1, 4, 8, 10, 13, 2, 9, 0, 7, 5, 6, 11, 3, 18, 15, 16, 17, 14, 19, 12]
 
-    solver = SolverFactory.createSolver('astr', 'manh')
+    solver = SolverFactory.createSolver('bfs', 'URLD')
     start_time = time.time()
     board, row, col, model_board = FileReader.readFile("initial_file.txt")
+
     solved = solver.solve(State(Board(tuple(board), row, col)),
                           Board(model_board, row, col))
     end_time = time.time()
     print(end_time - start_time)
 
-    solved.printTree()
-    print(FileWriter.writeFile("solved.txt", solved))
+    solved.printTreeForState()
+    print(FileWriter.writeFile("solved.txt", solved.finalState))
+    print(solved.maxDepth)
+    print(solved.getNumberOfVisitedStates())
+    print(solved.getNumberOfProcessedStates())
 
 
 if __name__ == '__main__':

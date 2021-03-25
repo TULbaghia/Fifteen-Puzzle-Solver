@@ -19,9 +19,6 @@ class State:
             self.parent.printTree()
         print(f'{self}')
 
-    def getEpoch(self) -> str:
-        return str(self.epoch)
-
     def __eq__(self, other: State) -> bool:
         return self.board == other.board
 
