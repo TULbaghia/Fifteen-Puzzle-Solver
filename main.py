@@ -1,8 +1,13 @@
+import time
+from random import shuffle
+
 from puzzle.file.FileWriter import FileWriter
 from puzzle.model.Board import Board
+from puzzle.model.Result import Result
 from puzzle.model.State import State
 from timeit import default_timer as timer
 
+from puzzle.solver.CheckSolvable import CheckSolvable
 from puzzle.solver.SolverFactory import SolverFactory
 from puzzle.file.FileReader import FileReader
 
@@ -29,24 +34,20 @@ def main():
     # arr = [1, 4, 8, 10, 13, 2, 9, 0, 7, 5, 6, 11, 3, 18, 15, 16, 17, 14, 19, 12]
 
     solver = SolverFactory.createSolver('astr', 'manh')
-
-    start = timer()
     board, row, col, model_board = FileReader.readFile("initial_file.txt")
+    start = timer()
 
-    solved = solver.solve(State(Board(tuple(board), row, col)),
-                          Board(model_board, row, col))
+    if CheckSolvable.isSolvable(Board(tuple(board), row, col)):
+        solved = solver.solve(State(Board(tuple(board), row, col)),
+                              Board(model_board, row, col))
+    else:
+        solved = Result()
+
     end = timer()
     timeInMillis = (end - start) * 1000
     print(timeInMillis)
     FileWriter.saveSolution("solved.txt", solved)
     FileWriter.saveStats("stats.txt", solved, round(timeInMillis, 3))
-
-
-    # solved.printTreeForState()
-    # print(solved.maxDepth)
-    # print(solved.numberOfVisitedStates)
-    # print(solved.numberOfStatesToVisit)
-    # print(solved.getNumberOfProcessedStates())
 
 
 if __name__ == '__main__':
