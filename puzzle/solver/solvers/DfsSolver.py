@@ -22,22 +22,18 @@ class DfsSolver(ISolver):
         self.searchOrder = tuple(searchList)
 
     def solve(self, initialState: State, finalView: Board) -> Result:
-        result = Result()
         if initialState.board == finalView:
-            result.finalState = initialState
-            return result
+            return Result(initialState)
+
         toVisit = LifoQueue()
         toVisit.put_nowait(initialState)
         visited = set()
-
-        result.toVisit = toVisit
-        result.visited = visited
 
         while not toVisit.empty():
             state = toVisit.get_nowait()
             visited.add(state)
 
-            if state.epoch <= self.RECURSION_LIMIT:
+            if state.epoch < self.RECURSION_LIMIT:
                 MutableBoard.mutate(state, Move.ALL)
 
                 for order in self.searchOrder:
@@ -46,7 +42,7 @@ class DfsSolver(ISolver):
                         if self.maxDepth < child.epoch:
                             self.maxDepth = child.epoch
                         if child.board == finalView:
-                            result.maxDepth = self.maxDepth
-                            result.finalState = child
-                            return result
+                            return Result(child, self.maxDepth, toVisit.qsize(), len(visited))
                         toVisit.put_nowait(child)
+        if toVisit.empty():
+            return Result(None, self.maxDepth, 0, len(visited))

@@ -16,21 +16,17 @@ class AStarSolver(ISolver):
         self.maxDepth = 0
 
     def solve(self, initialState: State, finalView: Board) -> Result:
-        result = Result()
         if initialState.board == finalView:
-            result.finalState = initialState
-            return result
+            return Result(initialState)
         toVisit = deque([initialState])
         visited = set()
-
-        result.toVisit = toVisit
-        result.visited = visited
 
         while toVisit:
             toVisit = deque(sorted(toVisit, key=lambda item: item.score))
 
             state = toVisit.popleft()
             visited.add(state)
+
             MutableBoard.mutate(state, Move.ALL)
 
             for move in state.children:
@@ -39,8 +35,8 @@ class AStarSolver(ISolver):
                     if self.maxDepth < child.epoch:
                         self.maxDepth = child.epoch
                     if child.board == finalView:
-                        result.maxDepth = self.maxDepth
-                        result.finalState = child
-                        return result
+                        return Result(child, self.maxDepth, len(toVisit), len(visited))
                     child.score = self.heuristics(child, finalView)
                     toVisit.append(child)
+        if not toVisit:
+            return Result(None, self.maxDepth, 0, len(visited))

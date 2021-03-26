@@ -1,18 +1,40 @@
 from puzzle.enum.Move import Move
 
 
-# TODO: ADD UNRESOLVED CASE
+from puzzle.model.Result import Result
+
 
 class FileWriter(object):
 
     @staticmethod
-    def writeFile(filePath, state) -> list:
+    def saveSolution(filePath, result: Result):
+        state = result.finalState
+        if state is None:
+            FileWriter.writeUnsolvedPuzzles(filePath, '-1')
+            return
         arr = []
         arr = FileWriter.getPreviousStepsFromFinalState(state, arr)
         with open(filePath, mode='w') as file:
             file.write(str(state.epoch) + "\n")
             file.write(FileWriter.listToString(arr[::-1]))
-        return arr
+
+    @staticmethod
+    def saveStats(filePath, result: Result, timeInMillis):
+        state = result.finalState
+        if state is None:
+            FileWriter.writeUnsolvedPuzzles(filePath, '-1')
+        else:
+            FileWriter.writeUnsolvedPuzzles(filePath, str(state.epoch))
+        with open(filePath, mode='a') as file:
+            file.write(str(result.numberOfVisitedStates) + "\n")
+            file.write(str(result.getNumberOfProcessedStates()) + "\n")
+            file.write(str(result.maxDepth) + "\n")
+            file.write(str(timeInMillis))
+
+    @staticmethod
+    def writeUnsolvedPuzzles(filePath: str, contentToWrite: str):
+        with open(filePath, mode='w') as file:
+            file.write(contentToWrite + "\n")
 
     @staticmethod
     def getPreviousStepsFromFinalState(state, arr: list) -> list:

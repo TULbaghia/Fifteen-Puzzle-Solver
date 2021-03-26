@@ -5,17 +5,15 @@ from puzzle.model.State import State
 
 
 class Result(object):
-    def __init__(self, toVisit: deque = None, visited: set = None, finalState: State = None):
-        self.maxDepth = 0
-        self.toVisit = toVisit
-        self.visited = visited
+    def __init__(self, finalState: State = None, maxDepth: int = 0, numberOfStatesToVisit: int = 0,
+                 numberOfVisitedStates: int = 0):
+        self.maxDepth = maxDepth
         self.finalState = finalState
-
-    def getNumberOfVisitedStates(self):
-        return len(self.visited)
+        self.numberOfStatesToVisit = numberOfStatesToVisit
+        self.numberOfVisitedStates = numberOfVisitedStates
 
     def getNumberOfProcessedStates(self):
-        return len(self.visited) + len(list(self.toVisit))
+        return self.numberOfVisitedStates + self.numberOfStatesToVisit
 
     def printTreeForState(self):
         if self.finalState is not None:

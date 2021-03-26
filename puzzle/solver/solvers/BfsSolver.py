@@ -21,20 +21,17 @@ class BfsSolver(ISolver):
         self.searchOrder = tuple(searchList)
 
     def solve(self, initialState: State, finalView: Board) -> Result:
-        result = Result()
         if initialState.board == finalView:
-            result.finalState = initialState
-            return result
+            return Result(initialState)
+
         toVisit = deque()
         toVisit.append(initialState)
         visited = set()
 
-        result.toVisit = toVisit
-        result.visited = visited
-
         while toVisit:
             state = toVisit.popleft()
             visited.add(state)
+
             MutableBoard.mutate(state, Move.ALL)
 
             for order in self.searchOrder:
@@ -43,7 +40,7 @@ class BfsSolver(ISolver):
                     if self.maxDepth < child.epoch:
                         self.maxDepth = child.epoch
                     if child.board == finalView:
-                        result.maxDepth = self.maxDepth
-                        result.finalState = child
-                        return result
+                        return Result(child, self.maxDepth, len(toVisit), len(visited))
                     toVisit.append(child)
+        if not toVisit:
+            return Result(None, self.maxDepth, 0, len(visited))
