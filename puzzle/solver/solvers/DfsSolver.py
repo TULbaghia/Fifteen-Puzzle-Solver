@@ -19,7 +19,7 @@ class DfsSolver(ISolver):
         searchList = []
         for i in searchOrder:
             searchList.append({'U': Move.UP, 'D': Move.DOWN, 'L': Move.LEFT, 'R': Move.RIGHT}[i])
-        self.searchOrder = tuple(searchList)
+        self.searchOrder = tuple(searchList[::-1])
 
     def solve(self, initialState: State, finalView: Board) -> Result:
         if initialState.board == finalView:
