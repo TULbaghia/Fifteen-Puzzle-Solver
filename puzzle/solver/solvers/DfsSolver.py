@@ -38,7 +38,7 @@ class DfsSolver(ISolver):
 
                 for order in self.searchOrder:
                     child = state.children.get(order, None)
-                    if child is not None and child not in visited and child not in toVisit.queue:
+                    if child is not None:  # and self.shouldBeInserted(visited, toVisit, child):
                         if self.maxDepth < child.epoch:
                             self.maxDepth = child.epoch
                         if child.board == finalView:
@@ -46,3 +46,20 @@ class DfsSolver(ISolver):
                         toVisit.put_nowait(child)
         if toVisit.empty():
             return Result(None, self.maxDepth, 0, len(visited))
+
+    def shouldBeInserted(self, visited, toVisit, state: State) -> bool:
+        if state in visited:
+            test = self.getEarliestEpochEqual(visited, state)
+            if test is not None and test.epoch < state.epoch:
+                visited.remove(test)
+                return True
+            else:
+                return False
+
+        # if state in toVisit.queue and self.getEarliestEpochEqual(toVisit.queue, state) < state:
+        #     return False
+
+        return True
+
+    def getEarliestEpochEqual(self, collection, state) -> State:
+        return min(collection, key=lambda x: x == state and x.epoch < state.epoch)

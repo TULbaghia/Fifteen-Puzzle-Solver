@@ -54,5 +54,5 @@ class FileWriter(object):
 
     @staticmethod
     def listToString(s) -> str:
-        str1 = " "
+        str1 = ""
         return str1.join(s)
