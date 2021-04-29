@@ -12,7 +12,6 @@ class State:
         self.parent = parent
         self.epoch = 0 if self.parent is None else self.parent.epoch + 1
         self.score = 0
-
         self.children = {}
 
     def printTree(self):

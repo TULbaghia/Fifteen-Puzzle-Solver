@@ -15,7 +15,7 @@ class MutableBoard(object):
 
     @staticmethod
     def __moveUp(board: Board) -> Union[None, Board]:
-        if board.getEmptyIndex() < board.getCol() - 1:
+        if board.getEmptyIndex() < board.getCol():
             return
         return MutableBoard.__getSwappedBoard(board, board.getEmptyIndex() - board.getCol(), board.getEmptyIndex())
 
