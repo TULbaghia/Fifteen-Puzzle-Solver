@@ -29,28 +29,75 @@
 \pagebreak
 
 \section{Cel}
-{\color{blue}
-W tej sekcji należy zamieścić zwięzły (maksymalnie dwa, trzy zdania) opis
-problemu, który był rozwiązywany (uwzględnić należy zarówno część badawczą jak
-i programistyczną).}
+{\color{black}
+Zadanie składało się z dwóch części: programistycznej oraz badawczej. Pierwsza część polegała na napisaniu programu, który znajduje rozwiązanie gry logicznej “Piętnastka”. Badania, które należało przeprowadzić w drugiej części zadania, miały wykazać jak wybrane algorytmy radzą sobie z rozwiązywaniem wskazanej łamigłówki.
+}
+
 
 \section{Wprowadzenie}
-{\color{blue}
-We wprowadzeniu należy zaprezentować niezbędną teorię potrzebną do realizacji
-zadania (przy czym należy tu ograniczyć się wyłącznie do tego, co było
-wykorzystane), tak aby inny student, który nigdy wcześniej nie zetknął się z tą
-tematyką, potrafił zrozumieć dalszy opis. Część ta powinna wprowadzać wszystkie
-wykorzystywane wzory, oznaczenia itp., do których należy się odwoływać w
-dalszej części niniejszego sprawozdania. Zamieszczony tu własny opis teorii (a
-nie skopiowany!) należy poprzeć odwołaniami bibliograficznymi do literatury
-zamieszczonej na końcu.}
+{\color{black}
+Piętnastka to układanka, która jest reprezentowana przez planszę o rozmiarze 4x4. Plansza jest wypełniona przez 15 płytek, każda z nich ma przypisany numer z zakresu od 1 do 15. Jedno miejsce na planszy zawsze musi pozostać puste. Warunkiem końcowym tej gry logicznej jest ułożenie wszystkich 15 płytek, tak aby numery na nich zawarte były ułożone w kolejności rosnącej.
+
+Algorytmy, które zostały wykorzystane w części badawczej:
+\begin{itemize}
+  \item DFS (Depth-first Search) - przejście grafu w głąb. Trawersowanie polega w tym przypadku na przechodzeniu kolejno lewego oraz prawego poddrzewa. 
+Z węzła początkowego (korzenia), następuje przejście do pierwszego połączonego z nim węzła - przyjmijmy, że jest to węzeł B (rys. 1). Z węzła B przechodzimy do pierwszego nie odwiedzonego węzła, który jest bezpośrednio połączony z węzłem B. W sytuacji, kiedy nie istnieje nieodwiedzony węzeł, następuje powrót do poprzedniego węzła, a czynność zostaje powtórzona do momentu odwiedzenia wszystkich węzłów.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[scale=0.5]{dfs_tree}
+		\caption{DFS - kolejność odwiedzania stanów}
+	\end{center}
+\end{figure}
+
+  \item BFS (Breadth-first Search) - Algorytm przeszukiwania wszerz
+Algorytm rozpoczyna generowanie sąsiadów od stanu początkowego (korzenia), następnie (w kolejności wybranej przez użytkownika) odwiedza wygenerowane stany oraz generuje sąsiadów dla nich. W pierwszej kolejności odwiedzani są sąsiedzi znajdujący się w tej samej odległości od korzenia. Po odwiedzeniu wszystkich elementów o tej samej odległości, następuje przejście do kolejnego poziomu oraz odwiedzanie względem kolejności wygenerowania.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[scale=0.5]{bfs_tree}
+		\caption{BFS - kolejność odwiedzania stanów}
+	\end{center}
+\end{figure}
+\newpage
+
+  \item A* - algorytm heurystyczny wykorzystywany do znajdowania ścieżki pomiędzy węzłami w grafie. Zasada działania opiera się na przeszukiwaniu węzłów według wartości funkcji f(x) o wzorze:\\ \centerline{ f(x) = g(x) + h(x), gdzie: }\\ g(x) to funkcja kosztu,\\ h(x) to funkcja heurystyczna.\\ Pierwszeństwo przeszukiwania zostaje wyznaczone dla węzła, który posiada najmniejszą wartość funkcji f(x).
+Do przeprowadzenia części badawczej z wykorzystywania algorytmu A* zostały wybrane dwie heurystyki:
+  \begin{itemize}
+  \item Metryka Hamminga - polega na zliczeniu elementów układanki, które w danym ustawieniu na planszy są umiejscowione w nieprawidłowych miejscach (ich pozycja różni się od pozycji w układzie finalnym - wzorcowym).
+  \item Metryka Manhattan - polega na obliczeniu odległości, która dzieli pozycję elementu na planszy w danym ustawieniu, od jej pozycji na planszy w układzie wzorcowym - rozwiązaniu układu.
+  \end{itemize}
+\end{itemize}
+
+}
 
 \section{Opis implementacji}
-{\color{blue}
-Należy tu zamieścić krótki i zwięzły opis zaprojektowanych klas oraz powiązań
-między nimi. Powinien się tu również znaleźć diagram UML (diagram klas)
-prezentujący najistotniejsze elementy stworzonej aplikacji. Należy także podać,
-w jakim języku programowania została stworzona aplikacja.}
+{\color{black}
+Program jest aplikacją konsolową napisaną w języku Python. Do uruchomienia wymagane jest przekazanie do programu parametrów takich jak:
+  \begin{itemize}
+  \item akronim strategii użytej do rozwiązania układu,
+  \item dodatkowy parametr uszczegóławiający wybraną strategię,
+  \item nazwa pliku zawierającego początkowy stan układanki,
+  \item nazwa pliku do którego zostanie zapisane rozwiązanie układu,
+  \item nazwa pliku do którego zostaną zapisane dodatkowe informacje.
+  \end{itemize}
+Podczas uruchomienia programu dla układu wejściowego sprawdzane jest czy istnieje dla niego rozwiązanie. Jeżeli rozwiązanie istnieje, za pomocą fabryki SolverFactory tworzony jest obiekt algorytmu rozwiązującego układ oraz następuje próba jego rozwiązania. Układy wczytywane są do klasy Board reprezentującej układ puzzli na planszy. Klasa State odpowiada za przechowywanie informacji dotyczących stanu dla wygenerowanych plansz, zawiera pola takie jak: głębokość rozwiązania, ostatni ruch, czy stan rodzica.
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[scale=0.5]{uml}
+		\caption{Diagram UML}
+	\end{center}
+\end{figure}
+\newpage
+
+Opis zaimplementowanych strategii:
+  \begin{itemize}
+  \item BFS - Algorytm przeszukiwania wszerz \\Do zachowania odpowiedniej kolejności przy przechodzeniu pomiędzy stanami zastosowano obiekt (deque) implementujący zachowanie kolejka FIFO.
+  \item DFS - Algortym przeszukiwania w głąb \\W celu zachowania odpowiedniej kolejności przy przechodzeniu pomiędzy stanami wykorzystano obiekt (LifoQueue) implementujący zachowanie kolejki LIFO.\\
+  \item A* \\Zachowanie odpowiedniej kolejności przy przechodzeniu pomiędzy stanami zostało zrealizowane za pomocą sortowania rosnąco listy dwukierunkowej (deque) implementującej zachowanie kolejki FIFO.
+  \end{itemize}
+}
 
 \section{Materiały i metody}
 {\color{black}
@@ -190,10 +237,20 @@ o odległości od układu wzorcowego równej 7 i jest bardzo niewielka. Dodatkow
   \bibitem{l2short} T. Oetiker, H. Partl, I. Hyna, E. Schlegl.
     \textsl{Nie za krótkie wprowadzenie do systemu \LaTeX2e}, 2007, dostępny
     online.
+  \bibitem{l2short} Jerzy Wałaszek\\
+    \url{https://eduinf.waw.pl/inf/alg/001_search/0110.php}
+  \bibitem{l2short} Wikipedia wolna encyklopedia\\
+    \url{https://en.wikipedia.org/wiki/Breadth-first_search}
+  \bibitem{l2short} Wikipedia wolna encyklopedia\\
+    \url{https://en.wikipedia.org/wiki/Depth-first_search}
+  \bibitem{l2short} Wikipedia wolna encyklopedia\\
+    \url{https://en.wikipedia.org/wiki/A*_search_algorithm}
+  \bibitem{l2short} geeksforgeeks - jitt, akshitajp\\
+    \url{https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/}
+  \bibitem{l2short} algorytm.edu.pl\\
+    \url{http://www.algorytm.edu.pl/grafy/przeszukiwanie-w-glab.html}
+  \bibitem{l2short} cs.princeton.edu\\
+    \url{https://www.cs.princeton.edu/courses/archive/fall12/cos226/assignments/8puzzle.html}
 \end{thebibliography}
-
-{\color{blue}
-Na końcu należy obowiązkowo podać cytowaną w sprawozdaniu literaturę, z której
-grupa korzystała w trakcie prac nad zadaniem.}
 
 \end{document}
